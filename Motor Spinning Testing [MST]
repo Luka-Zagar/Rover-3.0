@@ -1,0 +1,17 @@
+void setup() {
+
+  pinMode(7, OUTPUT); // HL
+  pinMode(6, OUTPUT); // LOCK
+  pinMode(5, OUTPUT); // S/S
+  pinMode(4, OUTPUT); // CLOCK
+
+  digitalWrite(7, HIGH);  //speed [high = fast, low = slow]
+                          //high = 108 rpm  low = 48 rpm
+  digitalWrite(5, LOW);   // start/stop [low = start, high = stop]
+    
+  digitalWrite(6, LOW);  // any combinaton except ( HIGH/HIGH which does not run) doesn't change a diffrence
+  digitalWrite(4, LOW);  // same as the above
+}
+
+void loop() {
+}
