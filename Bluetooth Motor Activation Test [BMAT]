@@ -1,0 +1,50 @@
+#include <TM1637Display.h>
+
+const int CLK = 10; //Set the CLK pin connection to the display
+const int DIO = 9; //Set the DIO pin connection to the display
+const int LedPin = 8; //Set the LED pin connection
+
+TM1637Display display(CLK, DIO); //set up the 4-Digit Display.
+
+void setup() {
+
+  pinMode(7, OUTPUT); // HL
+  pinMode(6, OUTPUT); // LOCK
+  pinMode(5, OUTPUT); // S/S
+  pinMode(4, OUTPUT); // CLOCK
+
+  digitalWrite(6, LOW);  // any combinaton except ( HIGH/HIGH which does not run) doesn't change a diffrence
+  digitalWrite(4, LOW);  // same as the above
+  digitalWrite(7, HIGH);  //speed [high = fast, low = slow]
+                          //high = 108 rpm  low = 48 rpm
+  
+  Serial.begin(115200);
+  pinMode(LedPin, OUTPUT);
+  display.setBrightness(0x0a); //set the diplay to maximum brightness
+}
+ 
+void loop() {
+  if(Serial.available() > 0) {  
+       
+    char data= Serial.read();
+    
+    switch(data) {
+      case 'a': 
+        digitalWrite(LedPin, HIGH);
+        display.showNumberDec(0); //Display the numCounter value;
+        digitalWrite(5, HIGH);   // start/stop [low = start, high = stop]
+        break;
+        
+      case 'b': 
+        digitalWrite(LedPin, LOW);
+        display.showNumberDec(1); //Display the numCounter value;
+        digitalWrite(5, LOW);   // start/stop [low = start, high = stop]
+        
+        break;
+        
+      default : 
+        break;
+    }
+    Serial.print(data);
+  }
+}
